@@ -61,9 +61,6 @@ else:
           </pre>
         </div>
         <div className="text-center animate-ping">
-          <p className="text-xl animate-bounce">
-            Now that you understand the basics of binary search, you can start using it to efficiently search sorted arrays!
-          </p>
         </div>
       </div>
     </div>
