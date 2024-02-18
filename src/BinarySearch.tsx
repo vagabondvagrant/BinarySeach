@@ -6,12 +6,10 @@ const BinarySearch = () => {
   const [resultIndex, setResultIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number | null>(null);
-  const [searchHistory, setSearchHistory] = useState<number[]>([]);
-  const [left, setLeft] = useState<number | null>(null);
-  const [right, setRight] = useState<number | null>(null);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   const generateRandomArray = () => {
-    const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+    const newArray = Array.from({ length: 30 }, () => Math.floor(Math.random() * 100));
     newArray.sort((a, b) => a - b);
     setArray(newArray);
     setTarget(null);
@@ -19,8 +17,6 @@ const BinarySearch = () => {
     setError(null);
     setCurrentStep(null);
     setSearchHistory([]);
-    setLeft(null);
-    setRight(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,14 +34,14 @@ const BinarySearch = () => {
     let left = 0;
     let right = array.length - 1;
 
-    const history: number[] = [];
+    const history: string[] = [];
 
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
       const midValue = array[mid];
       setCurrentStep(mid);
 
-      history.push(mid);
+      history.push(`Mid-${mid} (${midValue})`);
 
       if (midValue === target) {
         setResultIndex(mid);
@@ -72,7 +68,7 @@ const BinarySearch = () => {
         <h1 className="text-2xl font-semibold mb-4 text-center">Binary Search</h1>
         <div className="flex flex-col md:flex-row md:items-center mb-4">
           <button
-            className="bg-gray-700 text-white px-2 py-2 rounded-md mb-2 md:mb-0 md:mr-2"
+            className="bg-gray-700 text-white py-1 px-1 rounded-md mb-2 md:mb-0 md:mr-2"
             onClick={generateRandomArray}
           >
             Generate Random Array
@@ -95,13 +91,17 @@ const BinarySearch = () => {
             <div
               key={index}
               className={`w-10 h-10 flex items-center justify-center relative rounded-full border-4 ${
-                resultIndex === index ? 'border-yellow-300 bg-blue-500' : 'border-gray-300 bg-gray-200'
-              }`}
+                resultIndex === index ? 'border-cyan-700 bg-gray-900' : 'border-gray-300 bg-gray-200'
+              } transition-colors duration-500`}
             >
-              <span className={`text-sm font-bold ${resultIndex === index ? 'text-white' : 'text-gray-800'}`}>{num}</span>
+              <span
+                className={`text-sm font-bold ${
+                  resultIndex === index ? 'text-white' : 'text-gray-800'
+                }`}
+              >
+                {num}
+              </span>
               {index === currentStep && <span className="absolute top-full text-xs text-gray-500">{index}</span>}
-              {index === left && <span className="absolute top-0 left-0 text-xs text-red-500">L</span>}
-              {index === right && <span className="absolute top-0 right-0 text-xs text-green-500">R</span>}
             </div>
           ))}
         </div>
@@ -113,12 +113,21 @@ const BinarySearch = () => {
         )}
         {searchHistory.length > 0 && (
           <div className="mt-4">
-            <p>Search History:</p>
-            <ul className="list-disc list-inside">
-              {searchHistory.map((index, i) => (
-                <li key={i}>{index}</li>
-              ))}
-            </ul>
+            <p className='text-center'>Search History:</p>
+            <table className="table-auto mx-auto mt-4">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Steps</th>
+                </tr>
+              </thead>
+              <tbody>
+                {searchHistory.map((step, i) => (
+                  <tr key={i}>
+                    <td className="border px-4 py-2">{step}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
